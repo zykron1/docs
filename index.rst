@@ -14,3 +14,4 @@ To start, you might want to consider checking out our `tutorial <rst/Tutorial1.h
 
 	rst/Installation.rst
 	rst/Tutorials.rst
+	rst/Features.rst

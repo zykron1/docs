@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Tutorial 4" href="Tutorial4.html" /><link rel="prev" title="Tutorial 2" href="Tutorial2.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>Tutorial 3 - Mercury 0.72 documentation</title>
+        <title>Creating a Validator - Mercury 0.72 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -140,7 +140,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -164,12 +164,12 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="Tutorials.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="Tutorials.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial1.html">Tutorial 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial2.html">Tutorial 2</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Tutorial 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial3.html">Tutorial 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial4.html">Tutorial 4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial5.html">Tutorial 5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial6.html">Tutorial 6</a></li>
@@ -203,62 +203,45 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          <section id="tutorial-3">
-<h1>Tutorial 3<a class="headerlink" href="#tutorial-3" title="Link to this heading">#</a></h1>
-<p>This tutorial will be based of the <a class="reference external" href="tutorial2.html">previous tutorial</a>. Please complete it first.</p>
-<p>In the last tutorial we covered how to use the built-in ORM capabilities. In this tutorial we will cover validators.
-In mercury a validator is a preprocesser that can be attached to a controller that automatically filters out bad
-requests. For example, you might want to make sure that you only recive valid requests to your API that. Lets say
-you have a controller that takes in a username and a password. A validator would make sure that the username and
-password are not empty and that the input is a string. This form of preprocessing can be easily achived with the CLI:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>create<span class="w"> </span>validator<span class="w"> </span>Signin
-</pre></div>
-</div>
-<p>Once you run this, we can open up the file that it created in src/validators/SigninValidator.py:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">Validator</span>
-<span class="k">class</span> <span class="nc">SigninValidator</span><span class="p">:</span>
-    <span class="k">pass</span>
-</pre></div>
-</div>
-<p>We can add fields to our validator using this syntax:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">Validator</span>
+          <section id="creating-a-validator">
+<h1>Creating a Validator<a class="headerlink" href="#creating-a-validator" title="Link to this heading">#</a></h1>
+<p>To create a custom validator, you can define a class that specifies the validation rules for each field. This is done using the <cite>Validator</cite> class from the <cite>libmercury</cite> library. Below is an example of how to create a <cite>SigninValidator</cite> for validating user sign-in data.</p>
+<section id="example-validator-class">
+<h2>Example Validator Class<a class="headerlink" href="#example-validator-class" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">Validator</span>
+
 <span class="k">class</span> <span class="nc">SigninValidator</span><span class="p">:</span>
     <span class="n">username</span> <span class="o">=</span> <span class="n">Validator</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
     <span class="n">password</span> <span class="o">=</span> <span class="n">Validator</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">isActive</span> <span class="o">=</span> <span class="n">Validator</span><span class="o">.</span><span class="n">Boolean</span><span class="p">()</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="n">Validator</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">101</span><span class="p">)</span>
+    <span class="n">pets</span> <span class="o">=</span> <span class="n">Validator</span><span class="o">.</span><span class="n">Array</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="nd">@Validator</span><span class="o">.</span><span class="n">Object</span><span class="p">()</span>
+    <span class="k">class</span> <span class="nc">cars</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">Validator</span><span class="o">.</span><span class="n">String</span>
+        <span class="n">horsepower</span> <span class="o">=</span> <span class="n">Validator</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">3000</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Using this syntax we have created 2 fields, username and password. We then added minimum and maximum character
-limits to our fields. We can then integrate these fields into our controllers. So lets create a new controller named
-AuthFlowController:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>create<span class="w"> </span>controller<span class="w"> </span>AuthFlow
-</pre></div>
-</div>
-<p>Then lets write the following code in our controller:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">GETRoute</span><span class="p">,</span> <span class="n">POSTRoute</span><span class="p">,</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">useValidator</span>
-<span class="kn">from</span> <span class="nn">src.validators.SigninValidator</span> <span class="kn">import</span> <span class="n">SigninValidator</span>
-<span class="k">class</span> <span class="nc">AuthFlowController</span><span class="p">:</span>
-    <span class="nd">@staticmethod</span>
-    <span class="nd">@useValidator</span><span class="p">(</span><span class="n">SigninValidator</span><span class="p">)</span>
-    <span class="nd">@POSTRoute</span><span class="p">(</span><span class="s2">&quot;/api/signin&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">signin</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="s2">&quot;&lt;h1&gt;You passed the validator&lt;/h1&gt;&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span>
-</pre></div>
-</div>
-<p>Lets then check if our validator is working by sending a POST request to our server:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;username=ahsan&quot;</span><span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;password=password123&quot;</span><span class="w"> </span>http://localhost:8000/api/signin
-</pre></div>
-</div>
-<p>If everything was done correctly, we would see the following response:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;h1&gt;You<span class="w"> </span>passed<span class="w"> </span>the<span class="w"> </span>validator&lt;/h1&gt;
-</pre></div>
-</div>
+<p>This <cite>SigninValidator</cite> class defines several fields, each with its own validation criteria:</p>
+<ul class="simple">
+<li><p><strong>username</strong>: A string with a minimum length of 3 characters and a maximum of 20.</p></li>
+<li><p><strong>password</strong>: A string with a minimum length of 8 characters and a maximum of 50.</p></li>
+<li><p><strong>isActive</strong>: A boolean value indicating whether the user is active.</p></li>
+<li><p><strong>age</strong>: An integer between 13 and 101.</p></li>
+<li><p><strong>pets</strong>: An array with a minimum of 0 and a maximum of 3 elements.</p></li>
+<li><p><strong>cars</strong>: An embedded object containing two fields:
+- <strong>name</strong>: A string for the car’s name.
+- <strong>horsepower</strong>: An integer between 0 and 3000 representing the car’s horsepower.</p></li>
+</ul>
+<p>This structure ensures that incoming data adheres to the specified rules before processing.</p>
+</section>
 </section>
 
         </article>
@@ -266,26 +249,8 @@ AuthFlowController:</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="Tutorial4.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">Tutorial 4</div>
-              </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="Tutorial2.html">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title">Tutorial 2</div>
-                
-              </div>
-            </a>
+          
+          
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -304,8 +269,27 @@ AuthFlowController:</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Creating a Validator</a><ul>
+<li><a class="reference internal" href="#example-validator-class">Example Validator Class</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

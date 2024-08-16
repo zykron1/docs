@@ -42,10 +42,10 @@ Then lets write the following code in our controller:
 .. code-block:: python3
 
 	from libmercury import GETRoute, POSTRoute, Request, Response, useValidator
-	from src.validators.signinValidator import signinValidator
+	from src.validators.SigninValidator import SigninValidator
 	class AuthFlowController:
 	    @staticmethod
-	    @useValidator(signinValidator)
+	    @useValidator(SigninValidator)
 	    @POSTRoute("/api/signin")
 	    def signin(request: Request) -> Response:
 	    	response = Response("<h1>You passed the validator</h1>")
@@ -56,4 +56,11 @@ Lets then check if our validator is working by sending a POST request to our ser
 
 .. code-block:: bash
 
-	curl -X POST -d "username=ahsan" -d "password=1234567" http://localhost:8000/api/signin
+	curl -X POST -d "username=ahsan" -d "password=password123" http://localhost:8000/api/signin
+
+
+If everything was done correctly, we would see the following response:
+
+.. code-block:: bash
+
+	<h1>You passed the validator</h1>
