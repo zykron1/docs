@@ -238,6 +238,10 @@ columns to our table like username, password, etc.</p>
     <span class="n">password</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span>
 </pre></div>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Never store passwords in plaintext. Use hashing instead. Mercury has built-in tools for this.</p>
+</div>
 <p>Once we created the model, we can’t use it yet. This is because our database schema is not synced with the state
 of our current models. To sync our models with the database, we can use the CLI to create a migration:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>create<span class="w"> </span>migration<span class="w"> </span>first_migration
@@ -299,6 +303,30 @@ to create our table. We can do that using the following syntax:</p>
 <span class="o">[</span>Migrator<span class="o">]</span><span class="w"> </span><span class="s1">&#39;src/cargo/migrations/1.py&#39;</span><span class="w"> </span>passed<span class="w"> </span>with<span class="w"> </span>no<span class="w"> </span>errors
 </pre></div>
 </div>
+<p>And just like that, we can now use the user model in our code. To test this out, open a python shell in the root
+project folder and try some of these commands:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">Python</span> <span class="mf">3.10.6</span> <span class="p">(</span><span class="n">v3</span><span class="mf">.10.6</span><span class="p">:</span><span class="mi">9</span><span class="n">c7b4bd164</span><span class="p">,</span> <span class="n">Aug</span>  <span class="mi">1</span> <span class="mi">2022</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span><span class="mi">13</span><span class="p">:</span><span class="mi">48</span><span class="p">)</span> <span class="p">[</span><span class="n">Clang</span> <span class="mf">13.0.0</span> <span class="p">(</span><span class="n">clang</span><span class="o">-</span><span class="mf">1300.0.29.30</span><span class="p">)]</span> <span class="n">on</span> <span class="n">darwin</span>
+<span class="n">Type</span> <span class="s2">&quot;help&quot;</span><span class="p">,</span> <span class="s2">&quot;copyright&quot;</span><span class="p">,</span> <span class="s2">&quot;credits&quot;</span> <span class="ow">or</span> <span class="s2">&quot;license&quot;</span> <span class="k">for</span> <span class="n">more</span> <span class="n">information</span><span class="o">.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">src.cargo.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">src.cargo.userModel</span> <span class="kn">import</span> <span class="n">user</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">new_user</span> <span class="o">=</span> <span class="n">user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;JohnDoe&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;12345678&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">add_all</span><span class="p">([</span><span class="n">new_user</span><span class="p">,])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="o">==</span><span class="s2">&quot;JohnDoe&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span> <span class="c1"># Using sqlalchemy syntax</span>
+<span class="o">&lt;</span><span class="n">src</span><span class="o">.</span><span class="n">cargo</span><span class="o">.</span><span class="n">userModel</span><span class="o">.</span><span class="n">user</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x10c28f730</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">find_or_404</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">find_or_404</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;JohnDoe&quot;</span><span class="p">)</span> <span class="c1"># Using find_or_404</span>
+<span class="o">&lt;</span><span class="n">src</span><span class="o">.</span><span class="n">cargo</span><span class="o">.</span><span class="n">userModel</span><span class="o">.</span><span class="n">user</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x10c28f730</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">find_or_404</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;nonexistant&quot;</span><span class="p">)</span> <span class="c1"># Using find_or_404</span>
+<span class="o">&lt;</span><span class="n">Response</span> <span class="mi">22</span> <span class="nb">bytes</span> <span class="p">[</span><span class="mi">404</span> <span class="n">NOT</span> <span class="n">FOUND</span><span class="p">]</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">exists</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">exists</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;JohnDoe&quot;</span><span class="p">)</span> <span class="c1"># Using exists</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">exists</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;nonexistant&quot;</span><span class="p">)</span>
+<span class="kc">False</span>
+</pre></div>
+</div>
+<p>Next tutorial: <a class="reference external" href="tutorial3.html">Tutorial 3</a></p>
 </section>
 
         </article>

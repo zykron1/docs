@@ -211,6 +211,50 @@
         <article role="main">
           <section id="tutorial-3">
 <h1>Tutorial 3<a class="headerlink" href="#tutorial-3" title="Link to this heading">#</a></h1>
+<p>This tutorial will be based of the <a class="reference external" href="tutorial2.html">previous tutorial</a>. Please complete it first.</p>
+<p>In the last tutorial we covered how to use the built-in ORM capabilities. In this tutorial we will cover validators.
+In mercury a validator is a preprocesser that can be attached to a controller that automatically filters out bad
+requests. For example, you might want to make sure that you only recive valid requests to your API that. Lets say
+you have a controller that takes in a username and a password. A validator would make sure that the username and
+password are not empty and that the input is a string. This form of preprocessing can be easily achived with the CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>create<span class="w"> </span>validator<span class="w"> </span>Signin
+</pre></div>
+</div>
+<p>Once you run this, we can open up the file that it created in src/validators/SigninValidator.py:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">Validator</span>
+<span class="k">class</span> <span class="nc">SigninValidator</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>We can add fields to our validator using this syntax:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">Validator</span>
+<span class="k">class</span> <span class="nc">SigninValidator</span><span class="p">:</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">Validator</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">Validator</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using this syntax we have created 2 fields, username and password. We then added minimum and maximum character
+limits to our fields. We can then integrate these fields into our controllers. So lets create a new controller named
+AuthFlowController:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>create<span class="w"> </span>controller<span class="w"> </span>AuthFlow
+</pre></div>
+</div>
+<p>Then lets write the following code in our controller:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">GETRoute</span><span class="p">,</span> <span class="n">POSTRoute</span><span class="p">,</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">useValidator</span>
+<span class="kn">from</span> <span class="nn">src.validators.signinValidator</span> <span class="kn">import</span> <span class="n">signinValidator</span>
+<span class="k">class</span> <span class="nc">AuthFlowController</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@useValidator</span><span class="p">(</span><span class="n">signinValidator</span><span class="p">)</span>
+    <span class="nd">@POSTRoute</span><span class="p">(</span><span class="s2">&quot;/api/signin&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">signin</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="s2">&quot;&lt;h1&gt;You passed the validator&lt;/h1&gt;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+<p>Lets then check if our validator is working by sending a POST request to our server:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;username=ahsan&quot;</span><span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;password=1234567&quot;</span><span class="w"> </span>http://localhost:8000/api/signin
+</pre></div>
+</div>
 </section>
 
         </article>

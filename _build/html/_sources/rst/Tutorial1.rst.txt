@@ -1,6 +1,6 @@
 Tutorial 1
 ==========
-In this tutorial we will create a bacic project and add an index page. To create a project we need to use the
+In this tutorial we will create a basic project and add an index page. To create a project we need to use the
 following command:
 
 .. code-block:: bash
