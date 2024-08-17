@@ -18,7 +18,7 @@ Once you run this, we can open up the file that it created in src/validators/Sig
 
 	from libmercury import Validator 
 	class SigninValidator:
-	    pass
+		pass
 
 We can add fields to our validator using this syntax:
 
@@ -26,8 +26,8 @@ We can add fields to our validator using this syntax:
 
 	from libmercury import Validator 
 	class SigninValidator:
-	    username = Validator.String(min=3, max=20)
-	    password = Validator.String(min=8, max=50)
+		username = Validator.String(min=3, max=20)
+		password = Validator.String(min=8, max=50)
 
 Using this syntax we have created 2 fields, username and password. We then added minimum and maximum character
 limits to our fields. We can then integrate these fields into our controllers. So lets create a new controller named
@@ -44,12 +44,14 @@ Then lets write the following code in our controller:
 	from libmercury import GETRoute, POSTRoute, Request, Response, useValidator
 	from src.validators.SigninValidator import SigninValidator
 	class AuthFlowController:
-	    @staticmethod
-	    @useValidator(SigninValidator)
-	    @POSTRoute("/api/signin")
-	    def signin(request: Request) -> Response:
-	    	response = Response("<h1>You passed the validator</h1>")
-	    	return response
+		@staticmethod
+		@useValidator(SigninValidator)
+		@POSTRoute("/api/signin")
+		def signin(request: Request) -> Response:.. code-block:: bash
+
+	python3 -m libmercury create validator Signin
+			response = Response("<h1>You passed the validator</h1>")
+			return response
 
 Lets then check if our validator is working by sending a POST request to our server:
 
@@ -64,3 +66,18 @@ If everything was done correctly, we would see the following response:
 .. code-block:: bash
 
 	<h1>You passed the validator</h1>
+
+Let's also create another one just for signing up:
+
+.. code-block:: bash
+
+	python3 -m libmercury create validator Signup
+
+.. code-block:: python3
+
+	from libmercury import Validator 
+	class SignupValidator:
+		username = Validator.String(min=3, max=20)
+		password = Validator.String(min=8, max=50)
+
+Next tutorial: `Tutorial 4 <tutorial4.html>`_

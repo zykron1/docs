@@ -10,19 +10,19 @@ Example Validator Class
 
 .. code-block:: python
 
-    from libmercury import Validator 
+	from libmercury import Validator 
 
-    class SigninValidator:
-        username = Validator.String(min=3, max=20)
-        password = Validator.String(min=8, max=50)
-        isActive = Validator.Boolean()
-        age = Validator.Integer(min=13, max=101)
-        pets = Validator.Array(min=0, max=3)
+	class SigninValidator:
+		username = Validator.String(min=3, max=20)
+		password = Validator.String(min=8, max=50)
+		isActive = Validator.Boolean()
+		age = Validator.Integer(min=13, max=101)
+		pets = Validator.Array(min=0, max=3)
 
-        @Validator.Object()
-        class cars:
-            name = Validator.String
-            horsepower = Validator.Integer(min=0, max=3000)
+		@Validator.Object()
+		class cars:
+			name = Validator.String
+			horsepower = Validator.Integer(min=0, max=3000)
 
 This `SigninValidator` class defines several fields, each with its own validation criteria:
 

@@ -28,15 +28,15 @@ Once we have cd'd into the directory, we can see the project structure.
 	├── app.py
 	├── map.json
 	└── src
-	    ├── cargo
-	    │   ├── connection.py
-	    │   ├── dev.db
-	    │   └── migrations
-	    ├── controllers
-	    ├── security
-	    ├── static
-	    ├── templates
-	    └── validators
+		├── cargo
+		│   ├── connection.py
+		│   ├── dev.db
+		│   └── migrations
+		├── controllers
+		├── security
+		├── static
+		├── templates
+		└── validators
 
 At first this may feel overwhelming, but in practice it is quite simple. Inside the app.py file we have our WSGI
 application. We can then run the app like so:
@@ -66,12 +66,12 @@ Once this we can see that it creted a file in the src/controllers directory call
 	
 	from libmercury import GETRoute, Request, Response
 	class indexController:
-	    @staticmethod
-	    @GETRoute("/example")
-	    def example(request: Request) -> Response:
-		response = Response("<h1>Example Page</h1>")
-		response.headers['Content-Type'] = 'text/html'
-		return response
+		@staticmethod
+		@GETRoute("/example")
+		def example(request: Request) -> Response:
+			response = Response("<h1>Example Page</h1>")
+			response.headers['Content-Type'] = 'text/html'
+			return response
 
 We can modify this file so that it returns an html page. But hard coding an entire html file is not best practice so
 we can instead create a template file in src/templates called index.html.
@@ -80,7 +80,7 @@ we can instead create a template file in src/templates called index.html.
 
 	<html>
 	<body>
-	    <h1>Hello World!</h1>
+		<h1>Hello World!</h1>
 	</body>
 	</html>
 
@@ -90,10 +90,10 @@ Then we can integerate this template into our controller like so:
 	
 	from libmercury import GETRoute, Request, Response, use_template
 	class indexController:
-	    @staticmethod
-	    @GETRoute("/index")
-	    def index(request: Request) -> Response:
-		return use_template("index.html") 
+		@staticmethod
+		@GETRoute("/index")
+		def index(request: Request) -> Response:
+			return use_template("index.html") 
 
 
 Now if we start our server and visit localhost:8000 we should see the html page:
