@@ -5,113 +5,110 @@ This tutorial will be based of the `previous tutorial <tutorial1.html>`_. Please
 In the last tutorial we leanred how to create a route and how to link it with our templates. In this tutorial we will
 learn how to use the database in mercury.
 
-To create a model in Mercury, we can use the CLI once again to create a model:
+Creating a Model
+----------------
+
+To create a model in Mercury, you can use the CLI:
 
 .. code-block:: bash
-	
-	python3 -m libmercury create model user
 
-When we run this, mercury automatically creates a model called user. We can see what the CLI created by viewing
-src/cargo/user.py:
+    python3 -m libmercury create model user
 
-.. code-block:: python3
-
-	from libmercury.db import Column, Integer, Base
-
-	class user(Base):
-	    __tablename__ = "user"
-	    id = Column(Integer, primary_key=True)
-
-If you recognise this syntax, it's because Mercury uses SQLAlchemy internally. With this, we can add some simple
-columns to our table like username, password, etc.
+This command generates a model called `user`. You can find the generated code in `src/cargo/user.py`:
 
 .. code-block:: python3
 
-	from libmercury.db import Column, Integer, String, Base
+    from libmercury.db import Column, Integer, Base
 
-	class user(Base):
-	    __tablename__ = "user"
-	    id = Column(Integer, primary_key=True)
-	    username = Column(String(20))
-	    password = Column(String(50))
+    class user(Base):
+        __tablename__ = "user"
+        id = Column(Integer, primary_key=True)
 
+Adding Columns to Your Model
+----------------------------
+
+Let's extend the `user` model by adding `username` and `password` columns:
+
+.. code-block:: python3
+
+    from libmercury.db import Column, Integer, String, Base
+
+    class user(Base):
+        __tablename__ = "user"
+        id = Column(Integer, primary_key=True)
+        username = Column(String(20))
+        password = Column(String(50))
 
 .. warning::
 
-	Never store passwords in plaintext. Use hashing instead. Mercury has built-in tools for this.
+    Never store passwords in plaintext. Use hashing instead. Mercury has built-in tools for this.
 
-Once we created the model, we can't use it yet. This is because our database schema is not synced with the state
-of our current models. To sync our models with the database, we can use the CLI to create a migration:
+Creating a Migration
+--------------------
 
-.. code-block:: bash
-
-	python3 -m libmercury create migration first_migration
-
-When we run this, it will output some information about the state of the migration:
+After creating the model, you need to sync the database schema with the current state of your models. To do this, create a migration:
 
 .. code-block:: bash
 
-	[Migrator] Starting Migrator
-	[Migrator] Loading ORM models
-	[Migrator] Loading database schema
-	[Migrator] Finding discrepancies...
-	[Migrator] Loading discrepancies
-	[Migrator] Table 'user' is missing in the database.
-	[Migrator] Generated file: src/cargo/migrations/1.py
+    python3 -m libmercury create migration first_migration
 
-As we can see, the migration generator figured out that the "user" table is not in the database but is in the ORM. So
-to fix this it created a file for us in src/cargo/migrations/1.py. Opening this file shows us as follows:
+This command generates a migration file in `src/cargo/migrations/1.py`. Let's take a look at its contents:
 
 .. code-block:: python3
 
-	from libmercury.db import MigrationWrapper 
+    from libmercury.db import MigrationWrapper 
 
-	_version = '1'
-	_prev_version = None
-	
-	def upgrade(url):
-	    wrapper = MigrationWrapper(url)
-	
-	def downgrade(url):
-	    wrapper = MigrationWrapper(url)
+    _version = '1'
+    _prev_version = None
+    
+    def upgrade(url):
+        wrapper = MigrationWrapper(url)
+    
+    def downgrade(url):
+        wrapper = MigrationWrapper(url)
 
-Using this templated code, in the upgrade function we can use the wrapper variable to perform any necessary
-database operations. The same goes for the downgrade funciton, it just reverses the operations in the upgrade
-function. The wrapper variable has many functions, but in this case we want to use the wrapper.create_table() function
-to create our table. We can do that using the following syntax:
+The `upgrade` function is where you define the changes to apply to the database schema. The `downgrade` function defines how to revert those changes.
+
+Using the MigrationWrapper
+--------------------------
+
+Let's start by creating the `user` table:
 
 .. code-block:: python3
 
-	from libmercury.db import MigrationWrapper, Column, Integer, String 
+    from libmercury.db import MigrationWrapper, Column, Integer, String 
 
-	_version = '1'
-	_prev_version = None
-	
-	def upgrade(url):
-	    wrapper = MigrationWrapper(url)
-	    wrapper.create_table("user", [
-	        Column("id", Integer, primary_key=True),
-	        Column("username", String(20)),
-	        Column("password", String(50))
-	    ])
-	
-	def downgrade(url):
-	    wrapper = MigrationWrapper(url)
-	    wrapper.delete_table("user")
+    _version = '1'
+    _prev_version = None
+    
+    def upgrade(url):
+        wrapper = MigrationWrapper(url)
+        wrapper.create_table("user", [
+            Column("id", Integer, primary_key=True),
+            Column("username", String(20)),
+            Column("password", String(50))
+        ])
+    
+    def downgrade(url):
+        wrapper = MigrationWrapper(url)
+        wrapper.delete_table("user")
 
-Now that we have created this migration, we can run it using the CLI:
+Running the Migration
+---------------------
 
-.. code-block:: bash
-
-	python3 -m libmercury migrate
-
-If you did everything correctly, you should see the following output:
+To apply the migration, use the CLI:
 
 .. code-block:: bash
 
-	[Migrator] Running migration src/cargo/migrations/1.py
-	[Migrator] Table 'user' created successfully.
-	[Migrator] 'src/cargo/migrations/1.py' passed with no errors
+    python3 -m libmercury migrate
+
+If successful, you'll see output similar to:
+
+.. code-block:: bash
+
+    [Migrator] Running migration src/cargo/migrations/1.py
+    [Migrator] Table 'user' created successfully.
+    [Migrator] 'src/cargo/migrations/1.py' passed with no errors
 
 And just like that, we can now use the user model in our code. To test this out, open a python shell in the root
 project folder and try some of these commands:

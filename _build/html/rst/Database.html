@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Tutorial 3" href="Tutorial3.html" /><link rel="prev" title="Tutorial 1" href="Tutorial1.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="Creating a Validator" href="Validators.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>Tutorial 2 - Mercury 0.72 documentation</title>
+        <title>Database Guide - Mercury 0.72 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -166,18 +166,18 @@
   <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="Tutorials.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="Tutorials.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial1.html">Tutorial 1</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Tutorial 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial2.html">Database Guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial3.html">Tutorial 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial4.html">Tutorial 4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial5.html">Tutorial 5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial6.html">Tutorial 6</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="Features.html">Features</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Features</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="Features.html">Features</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Features</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="Validators.html">Creating a Validator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Database.html">Database Guide</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Database Guide</a></li>
 </ul>
 </li>
 </ul>
@@ -214,11 +214,9 @@
           </label>
         </div>
         <article role="main">
-          <section id="tutorial-2">
-<h1>Tutorial 2<a class="headerlink" href="#tutorial-2" title="Link to this heading">#</a></h1>
-<p>This tutorial will be based of the <a class="reference external" href="tutorial1.html">previous tutorial</a>. Please complete it first.</p>
-<p>In the last tutorial we leanred how to create a route and how to link it with our templates. In this tutorial we will
-learn how to use the database in mercury.</p>
+          <section id="database-guide">
+<h1>Database Guide<a class="headerlink" href="#database-guide" title="Link to this heading">#</a></h1>
+<p>A complete guide to how database modeling works in Mercury.</p>
 <section id="creating-a-model">
 <h2>Creating a Model<a class="headerlink" href="#creating-a-model" title="Link to this heading">#</a></h2>
 <p>To create a model in Mercury, you can use the CLI:</p>
@@ -306,30 +304,64 @@ learn how to use the database in mercury.</p>
 <span class="o">[</span>Migrator<span class="o">]</span><span class="w"> </span><span class="s1">&#39;src/cargo/migrations/1.py&#39;</span><span class="w"> </span>passed<span class="w"> </span>with<span class="w"> </span>no<span class="w"> </span>errors
 </pre></div>
 </div>
-<p>And just like that, we can now use the user model in our code. To test this out, open a python shell in the root
-project folder and try some of these commands:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">Python</span> <span class="mf">3.10.6</span> <span class="p">(</span><span class="n">v3</span><span class="mf">.10.6</span><span class="p">:</span><span class="mi">9</span><span class="n">c7b4bd164</span><span class="p">,</span> <span class="n">Aug</span>  <span class="mi">1</span> <span class="mi">2022</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span><span class="mi">13</span><span class="p">:</span><span class="mi">48</span><span class="p">)</span> <span class="p">[</span><span class="n">Clang</span> <span class="mf">13.0.0</span> <span class="p">(</span><span class="n">clang</span><span class="o">-</span><span class="mf">1300.0.29.30</span><span class="p">)]</span> <span class="n">on</span> <span class="n">darwin</span>
-<span class="n">Type</span> <span class="s2">&quot;help&quot;</span><span class="p">,</span> <span class="s2">&quot;copyright&quot;</span><span class="p">,</span> <span class="s2">&quot;credits&quot;</span> <span class="ow">or</span> <span class="s2">&quot;license&quot;</span> <span class="k">for</span> <span class="n">more</span> <span class="n">information</span><span class="o">.</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">src.cargo.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">src.cargo.userModel</span> <span class="kn">import</span> <span class="n">user</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">new_user</span> <span class="o">=</span> <span class="n">user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;JohnDoe&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;12345678&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">add_all</span><span class="p">([</span><span class="n">new_user</span><span class="p">,])</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="o">==</span><span class="s2">&quot;JohnDoe&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span> <span class="c1"># Using sqlalchemy syntax</span>
-<span class="o">&lt;</span><span class="n">src</span><span class="o">.</span><span class="n">cargo</span><span class="o">.</span><span class="n">userModel</span><span class="o">.</span><span class="n">user</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x10c28f730</span><span class="o">&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">find_or_404</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">find_or_404</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;JohnDoe&quot;</span><span class="p">)</span> <span class="c1"># Using find_or_404</span>
-<span class="o">&lt;</span><span class="n">src</span><span class="o">.</span><span class="n">cargo</span><span class="o">.</span><span class="n">userModel</span><span class="o">.</span><span class="n">user</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x10c28f730</span><span class="o">&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">find_or_404</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;nonexistant&quot;</span><span class="p">)</span> <span class="c1"># Using find_or_404</span>
-<span class="o">&lt;</span><span class="n">Response</span> <span class="mi">22</span> <span class="nb">bytes</span> <span class="p">[</span><span class="mi">404</span> <span class="n">NOT</span> <span class="n">FOUND</span><span class="p">]</span><span class="o">&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">exists</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">exists</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;JohnDoe&quot;</span><span class="p">)</span> <span class="c1"># Using exists</span>
-<span class="kc">True</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">exists</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;nonexistant&quot;</span><span class="p">)</span>
-<span class="kc">False</span>
+</section>
+<section id="making-schema-changes-with-migrations">
+<h2>Making Schema Changes with Migrations<a class="headerlink" href="#making-schema-changes-with-migrations" title="Link to this heading">#</a></h2>
+<p>Now that you understand the basics, let’s explore more advanced migration operations. The <cite>MigrationWrapper</cite> provides several functions to modify the database schema.</p>
+<p>### Adding a Column</p>
+<p>Suppose you want to add a new <cite>email</cite> column to the <cite>user</cite> table:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">upgrade</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">wrapper</span> <span class="o">=</span> <span class="n">MigrationWrapper</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">)))</span>
+
+<span class="k">def</span> <span class="nf">downgrade</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">wrapper</span> <span class="o">=</span> <span class="n">MigrationWrapper</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="n">drop_column</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Next tutorial: <a class="reference external" href="tutorial3.html">Tutorial 3</a></p>
+<p>### Modifying a Column</p>
+<p>To modify an existing column, such as changing the length of the <cite>username</cite> column from 20 to 50:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">upgrade</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">wrapper</span> <span class="o">=</span> <span class="n">MigrationWrapper</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="n">modify_column</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">downgrade</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">wrapper</span> <span class="o">=</span> <span class="n">MigrationWrapper</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="n">modify_column</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>### Dropping a Column</p>
+<p>If you need to remove a column, like the <cite>password</cite> column:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">upgrade</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">wrapper</span> <span class="o">=</span> <span class="n">MigrationWrapper</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="n">drop_column</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">downgrade</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">wrapper</span> <span class="o">=</span> <span class="n">MigrationWrapper</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">)))</span>
+</pre></div>
+</div>
+</section>
+<section id="deleting-a-table">
+<h2>Deleting a table<a class="headerlink" href="#deleting-a-table" title="Link to this heading">#</a></h2>
+<p>To remove an entire table, use the <cite>delete_table</cite> function:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">upgrade</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">wrapper</span> <span class="o">=</span> <span class="n">MigrationWrapper</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="n">delete_table</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">downgrade</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">20</span><span class="p">)),</span>
+        <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span>
+    <span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<p>With these functions, you can manage your database schema more effectively, making it easy to adapt as your application
+evolves.</p>
 </section>
 </section>
 
@@ -338,23 +370,15 @@ project folder and try some of these commands:</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="Tutorial3.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">Tutorial 3</div>
-              </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="Tutorial1.html">
+          
+          <a class="prev-page" href="Validators.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Tutorial 1</div>
+                <div class="title">Creating a Validator</div>
                 
               </div>
             </a>
@@ -388,12 +412,15 @@ project folder and try some of these commands:</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Tutorial 2</a><ul>
+<li><a class="reference internal" href="#">Database Guide</a><ul>
 <li><a class="reference internal" href="#creating-a-model">Creating a Model</a></li>
 <li><a class="reference internal" href="#adding-columns-to-your-model">Adding Columns to Your Model</a></li>
 <li><a class="reference internal" href="#creating-a-migration">Creating a Migration</a></li>
 <li><a class="reference internal" href="#using-the-migrationwrapper">Using the MigrationWrapper</a></li>
 <li><a class="reference internal" href="#running-the-migration">Running the Migration</a></li>
+<li><a class="reference internal" href="#making-schema-changes-with-migrations">Making Schema Changes with Migrations</a></li>
+<li><a class="reference internal" href="#deleting-a-table">Deleting a table</a></li>
+<li><a class="reference internal" href="#conclusion">Conclusion</a></li>
 </ul>
 </li>
 </ul>

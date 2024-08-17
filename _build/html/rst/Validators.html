@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="Features" href="Features.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Creating a Validator - Mercury 0.72 documentation</title>
@@ -164,7 +164,7 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="Tutorials.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial1.html">Tutorial 1</a></li>
@@ -173,6 +173,10 @@
 <li class="toctree-l2"><a class="reference internal" href="Tutorial4.html">Tutorial 4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial5.html">Tutorial 5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial6.html">Tutorial 6</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="Features.html">Features</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Features</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Creating a Validator</a></li>
 </ul>
 </li>
 </ul>
@@ -211,7 +215,9 @@
         <article role="main">
           <section id="creating-a-validator">
 <h1>Creating a Validator<a class="headerlink" href="#creating-a-validator" title="Link to this heading">#</a></h1>
-<p>To create a custom validator, you can define a class that specifies the validation rules for each field. This is done using the <cite>Validator</cite> class from the <cite>libmercury</cite> library. Below is an example of how to create a <cite>SigninValidator</cite> for validating user sign-in data.</p>
+<p>To create a custom validator, you can define a class that specifies the validation rules for each field. This is done
+using the <cite>Validator</cite> class from the <cite>libmercury</cite> library. Below is an example of how to create a <cite>SigninValidator</cite>
+for validating user sign-in data.</p>
 <section id="example-validator-class">
 <h2>Example Validator Class<a class="headerlink" href="#example-validator-class" title="Link to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">Validator</span>
@@ -241,6 +247,34 @@
 - <strong>horsepower</strong>: An integer between 0 and 3000 representing the car’s horsepower.</p></li>
 </ul>
 <p>This structure ensures that incoming data adheres to the specified rules before processing.</p>
+<p>We can integrate these validators in our controller logic using the useValidator decorator. Here is an example of
+how to use the <cite>SigninValidator</cite> class in a controller:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">GETRoute</span><span class="p">,</span> <span class="n">POSTRoute</span><span class="p">,</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">useValidator</span>
+<span class="kn">from</span> <span class="nn">src.validators.SigninValidator</span> <span class="kn">import</span> <span class="n">SigninValidator</span>
+<span class="k">class</span> <span class="nc">AuthFlowController</span><span class="p">:</span>
+        <span class="nd">@staticmethod</span>
+        <span class="nd">@useValidator</span><span class="p">(</span><span class="n">SigninValidator</span><span class="p">)</span>
+        <span class="nd">@POSTRoute</span><span class="p">(</span><span class="s2">&quot;/api/example&quot;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="s2">&quot;&lt;h1&gt;You passed the validator&lt;/h1&gt;&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+<p>The decorator also has a custom option called “error” which allows us to use a custom error message if the validation
+fails.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">GETRoute</span><span class="p">,</span> <span class="n">POSTRoute</span><span class="p">,</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">useValidator</span>
+<span class="kn">from</span> <span class="nn">src.validators.SigninValidator</span> <span class="kn">import</span> <span class="n">SigninValidator</span>
+<span class="k">class</span> <span class="nc">AuthFlowController</span><span class="p">:</span>
+        <span class="nd">@staticmethod</span>
+        <span class="nd">@useValidator</span><span class="p">(</span><span class="n">SigninValidator</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Response</span><span class="p">(</span><span class="s2">&quot;Invalid data&quot;</span><span class="p">))</span>
+        <span class="nd">@POSTRoute</span><span class="p">(</span><span class="s2">&quot;/api/example&quot;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="s2">&quot;&lt;h1&gt;You passed the validator&lt;/h1&gt;&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+<p>Using the anonomous function syntax, we can have custom error messages for validation failures. These can also be
+redirects.</p>
 </section>
 </section>
 
@@ -250,7 +284,17 @@
         
         <div class="related-pages">
           
-          
+          <a class="prev-page" href="Features.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Features</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">

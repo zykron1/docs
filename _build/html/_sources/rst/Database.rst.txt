@@ -1,9 +1,6 @@
-Tutorial 2
-==========
-This tutorial will be based of the `previous tutorial <tutorial1.html>`_. Please complete it first.
-
-In the last tutorial we leanred how to create a route and how to link it with our templates. In this tutorial we will
-learn how to use the database in mercury.
+Database Guide
+==============
+A complete guide to how database modeling works in Mercury.
 
 Creating a Model
 ----------------
@@ -110,29 +107,72 @@ If successful, you'll see output similar to:
     [Migrator] Table 'user' created successfully.
     [Migrator] 'src/cargo/migrations/1.py' passed with no errors
 
-And just like that, we can now use the user model in our code. To test this out, open a python shell in the root
-project folder and try some of these commands:
+Making Schema Changes with Migrations
+-------------------------------------
+
+Now that you understand the basics, let's explore more advanced migration operations. The `MigrationWrapper` provides several functions to modify the database schema.
+
+### Adding a Column
+
+Suppose you want to add a new `email` column to the `user` table:
 
 .. code-block:: python3
 
-	Python 3.10.6 (v3.10.6:9c7b4bd164, Aug  1 2022, 17:13:48) [Clang 13.0.0 (clang-1300.0.29.30)] on darwin
-	Type "help", "copyright", "credits" or "license" for more information.
-	>>> from src.cargo.connection import Connection
-	>>> from src.cargo.userModel import user
-	>>> new_user = user(username="JohnDoe", password="12345678")
-	>>> Connection.Session.add_all([new_user,])
-	>>> Connection.Session.commit()
-	>>> Connection.Session.query(user).filter(user.username=="JohnDoe").first() # Using sqlalchemy syntax
-	<src.cargo.userModel.user object at 0x10c28f730>
-	>>> from libmercury import find_or_404
-	>>> find_or_404(user, username="JohnDoe") # Using find_or_404
-	<src.cargo.userModel.user object at 0x10c28f730>
-	>>> find_or_404(user, username="nonexistant") # Using find_or_404
-	<Response 22 bytes [404 NOT FOUND]>
-	>>> from libmercury import exists
-	>>> exists(user, username="JohnDoe") # Using exists
-	True
-	>>> exists(user, username="nonexistant") 
-	False
+    def upgrade(url):
+        wrapper = MigrationWrapper(url)
+        wrapper.add_column("user", Column("email", String(50)))
 
-Next tutorial: `Tutorial 3 <tutorial3.html>`_
+    def downgrade(url):
+        wrapper = MigrationWrapper(url)
+        wrapper.drop_column("user", "email")
+
+### Modifying a Column
+
+To modify an existing column, such as changing the length of the `username` column from 20 to 50:
+
+.. code-block:: python3
+
+    def upgrade(url):
+        wrapper = MigrationWrapper(url)
+        wrapper.modify_column("user", "username", String(50))
+
+    def downgrade(url):
+        wrapper = MigrationWrapper(url)
+        wrapper.modify_column("user", "username", String(20))
+
+### Dropping a Column
+
+If you need to remove a column, like the `password` column:
+
+.. code-block:: python3
+
+    def upgrade(url):
+        wrapper = MigrationWrapper(url)
+        wrapper.drop_column("user", "password")
+
+    def downgrade(url):
+        wrapper = MigrationWrapper(url)
+        wrapper.add_column("user", Column("password", String(50)))
+
+Deleting a table
+----------------
+
+To remove an entire table, use the `delete_table` function:
+
+.. code-block:: python3
+
+    def upgrade(url):
+        wrapper = MigrationWrapper(url)
+        wrapper.delete_table("user")
+
+    def downgrade(url):
+        wrapper.create_table("user", [
+            Column("id", Integer, primary_key=True),
+            Column("username", String(20)),
+            Column("password", String(50))
+        ])
+
+Conclusion
+----------
+With these functions, you can manage your database schema more effectively, making it easy to adapt as your application
+evolves. 

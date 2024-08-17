@@ -1,7 +1,9 @@
 Creating a Validator
 ====================
 
-To create a custom validator, you can define a class that specifies the validation rules for each field. This is done using the `Validator` class from the `libmercury` library. Below is an example of how to create a `SigninValidator` for validating user sign-in data.
+To create a custom validator, you can define a class that specifies the validation rules for each field. This is done
+using the `Validator` class from the `libmercury` library. Below is an example of how to create a `SigninValidator` 
+for validating user sign-in data.
 
 Example Validator Class
 -----------------------
@@ -34,3 +36,36 @@ This `SigninValidator` class defines several fields, each with its own validatio
   - **horsepower**: An integer between 0 and 3000 representing the car's horsepower.
 
 This structure ensures that incoming data adheres to the specified rules before processing.
+
+We can integrate these validators in our controller logic using the useValidator decorator. Here is an example of
+how to use the `SigninValidator` class in a controller:
+
+.. code-block:: python3
+
+	from libmercury import GETRoute, POSTRoute, Request, Response, useValidator
+	from src.validators.SigninValidator import SigninValidator
+	class AuthFlowController:
+		@staticmethod
+		@useValidator(SigninValidator)
+		@POSTRoute("/api/example")
+		def example(request: Request) -> Response:
+			response = Response("<h1>You passed the validator</h1>")
+			return response
+
+The decorator also has a custom option called "error" which allows us to use a custom error message if the validation
+fails.
+
+.. code-block:: python3
+
+	from libmercury import GETRoute, POSTRoute, Request, Response, useValidator
+	from src.validators.SigninValidator import SigninValidator
+	class AuthFlowController:
+		@staticmethod
+		@useValidator(SigninValidator, error=lambda: Response("Invalid data"))
+		@POSTRoute("/api/example")
+		def example(request: Request) -> Response:
+			response = Response("<h1>You passed the validator</h1>")
+			return response
+
+Using the anonomous function syntax, we can have custom error messages for validation failures. These can also be
+redirects.
