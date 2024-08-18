@@ -10,7 +10,7 @@ import os
 project = 'Mercury'
 copyright = '2024, Ahsan Ahmed'
 author = 'Ahsan Ahmed'
-release = '0.72'
+release = '0.80'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

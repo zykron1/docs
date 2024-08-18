@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Tutorial 6" href="Tutorial6.html" /><link rel="prev" title="Tutorial 4" href="Tutorial4.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>Tutorial 5 - Mercury 0.72 documentation</title>
+        <title>Tutorial 5 - Mercury 0.80 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -129,7 +129,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Mercury 0.72 documentation</div></a>
+      <a href="../index.html"><div class="brand">Mercury 0.80 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -140,7 +140,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -175,6 +175,11 @@
 <li class="toctree-l2"><a class="reference internal" href="Tutorial6.html">Tutorial 6</a></li>
 </ul>
 </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="Features.html">Features</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Features</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="Validators.html">Creating a Validator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Database.html">Database Guide</a></li>
+</ul>
+</li>
 </ul>
 
 </div>
@@ -203,7 +208,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -211,6 +216,161 @@
         <article role="main">
           <section id="tutorial-5">
 <h1>Tutorial 5<a class="headerlink" href="#tutorial-5" title="Link to this heading">#</a></h1>
+<p>This tutorial will be based of the <a class="reference external" href="tutorial4.html">previous tutorial</a>. Please complete it first.</p>
+<section id="autogeneration">
+<h2>Autogeneration<a class="headerlink" href="#autogeneration" title="Link to this heading">#</a></h2>
+<p>In the last tutorial we manualy created a website with a login and signup system. But what if I told you, we could do
+all of that with just the CLI? To do so, lets create a new project from scratch:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>init
+</pre></div>
+</div>
+<p>Then once we cd into our project folder we can use the CLI to create a login system:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>python3 -m libmercury generate control:login
+[GENERATOR] Starting generation task
+What should be the name of the controller: Login
+What should be the route of the controller: /api/login
+What should be the success redirect of the controller: /dashboard
+What should be the name of the validator: Login
+What is the name of the model to sign into(leave blank to make a new one):
+What should be the table&#39;s name: user
+What should the username field be called: username
+What should the password field be called: password
+Is the password hashed? (y/n): y
+Is there an email field? (y/n): y
+What should the email field be called: email
+[CODEGEN] Successfully created src/cargo/userModel.py
+What should the salt be called: salt
+[GENERATOR] Successfully created model
+What is the name of the model to sign into(leave blank to make a new one): user
+What is the name of the model&#39;s password field: password
+What is the name of the model&#39;s username field: username
+Is the password hashed? (y/n): y
+What is the name of the validator function(check_password if you used this for the model): check_password
+What should be the name of the JWT: Main
+What kind of key do you want to generate? (HMAC/RSA): rsa
+[KEYGEN] RSA private key saved to src/.vault/MainPublic_key.pem
+[KEYGEN] RSA public key saved to src/.vault/MainPrivate_key.pem
+[CODEGEN] Successfully created src/cargo/MainJwt.py
+[CODEGEN] Successfully created src/controllers/LoginController.py
+[CODEGEN] Successfully created src/validators/LoginValidator.py
+[GENERATOR] Successfully created login controller
+</pre></div>
+</div>
+<p>And just like that, it created a user model, as well as a table. All we have to do now, is just set up the migration
+in our database, we can do so with the CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>create<span class="w"> </span>migration<span class="w"> </span>first_migration
+</pre></div>
+</div>
+<p>Then we can program the migration to create the table:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury.db</span> <span class="kn">import</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">MigrationWrapper</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Column</span>
+
+<span class="n">_version</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>
+<span class="n">_prev_version</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">def</span> <span class="nf">upgrade</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">wrapper</span> <span class="o">=</span> <span class="n">MigrationWrapper</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">20</span><span class="p">)),</span>
+    <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">)),</span>
+    <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;salt&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+    <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">318</span><span class="p">)),</span>
+    <span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">downgrade</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">wrapper</span> <span class="o">=</span> <span class="n">MigrationWrapper</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now let’s use our migration with the CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>migrate
+</pre></div>
+</div>
+<p>With our model created, we can now easily create a register for our model with the CLI:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>python3 -m libmercury generate control:register
+
+[GENERATOR] Starting generation task
+What should be the name of the controller: Register
+What should be the route of the controller: /api/register
+What should be the success redirect of the controller: /login
+What should be the name of the validator: Register
+What is the name of the model to register for(leave blank to make a new one): user
+Provide the name of your JWT to make sure that users are not signed in, leave blank to make a new one: Main
+What is the name of the model&#39;s username field: username
+Is the password hashed? (y/n): y
+What is the name of the model&#39;s password field: password
+What is the name of the model&#39;s password setter field: set_password
+Where should the controller redirect if the user is already signed in: /dashboard
+What is the name of the model&#39;s primary key: id
+[CODEGEN] Successfully created src/validators/RegisterValidator.py
+[CODEGEN] Successfully created src/controllers/RegisterController.py
+</pre></div>
+</div>
+<p>Once we do this, we can now set up all our pages. So lets create all our templates.
+To start, lets create a signin template by creating a file in src/templates/login.html:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;/api/login&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;username&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;password&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;password&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Then lets create a signup template by creating a file in src/templates/register.html:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;/api/register&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;username&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;password&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;password&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;email&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Then lets create a protected endpoint that tells us some information about who is signed in. Lets create a file in
+src/templates/dashboard.html:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Hello {{username}}<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Now lets rig our views up to a controller, we will name this controller “PagesController”. To do so run the following
+command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>controller<span class="w"> </span>Pages
+</pre></div>
+</div>
+<p>Then lets program our controller like so:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">GETRoute</span><span class="p">,</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">use_template</span><span class="p">,</span> <span class="n">useAutherization</span><span class="p">,</span> <span class="n">redirect</span>
+<span class="kn">from</span> <span class="nn">libmercury.security.jwt</span> <span class="kn">import</span> <span class="n">JWT</span>
+<span class="kn">from</span> <span class="nn">src.security.MainJwt</span> <span class="kn">import</span> <span class="n">MainJwt</span>
+<span class="k">class</span> <span class="nc">PagesController</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@GETRoute</span><span class="p">(</span><span class="s2">&quot;/loign&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">signin</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">use_template</span><span class="p">(</span><span class="s2">&quot;login.html&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@GETRoute</span><span class="p">(</span><span class="s2">&quot;/register&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">signup</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">use_template</span><span class="p">(</span><span class="s2">&quot;register.html&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@GETRoute</span><span class="p">(</span><span class="s2">&quot;/dashboard&quot;</span><span class="p">)</span>
+    <span class="nd">@useAutherization</span><span class="p">(</span><span class="n">MainJwt</span><span class="p">,</span> <span class="n">cookie</span><span class="o">=</span><span class="s2">&quot;token&quot;</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/signin&quot;</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">protected</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">use_template</span><span class="p">(</span><span class="s2">&quot;dashboard.html&quot;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">JWT</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s2">&quot;token&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">payload</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Now all we have to do is connect our pages to our API. To do so we need to edit our controller in
+src/controllers/RegisterController.py and src/controllers/LoginController.py. We can do this like so:</p>
+<p>Next tutorial: <a class="reference external" href="tutorial6.html">Tutorial 6</a></p>
+</section>
 </section>
 
         </article>
@@ -256,13 +416,32 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Tutorial 5</a><ul>
+<li><a class="reference internal" href="#autogeneration">Autogeneration</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=be457ae4"></script>
+</div><script src="../_static/documentation_options.js?v=5847cda8"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
