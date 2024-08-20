@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Tutorial 2" href="Tutorial2.html" /><link rel="prev" title="Tutorials" href="Tutorials.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>Tutorial 1 - Mercury 0.80 documentation</title>
+        <title>Tutorial 1: Getting Started with Your Mercury Project - Mercury 0.81 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -129,7 +129,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Mercury 0.80 documentation</div></a>
+      <a href="../index.html"><div class="brand">Mercury 0.81 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -167,7 +167,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="Tutorials.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Tutorial 1</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Tutorial 1: Getting Started with Your Mercury Project</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial2.html">Tutorial 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial3.html">Tutorial 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial4.html">Tutorial 4</a></li>
@@ -214,31 +214,30 @@
           </label>
         </div>
         <article role="main">
-          <section id="tutorial-1">
-<h1>Tutorial 1<a class="headerlink" href="#tutorial-1" title="Link to this heading">#</a></h1>
-<p>In this tutorial we will create a basic project and add an index page. To create a project we need to use the
-following command:</p>
+          <section id="tutorial-1-getting-started-with-your-mercury-project">
+<h1>Tutorial 1: Getting Started with Your Mercury Project<a class="headerlink" href="#tutorial-1-getting-started-with-your-mercury-project" title="Link to this heading">#</a></h1>
+<p>In this tutorial, we’ll guide you through the process of creating a basic project and adding an index page. To begin, initialize your project with the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>init
 </pre></div>
 </div>
-<p>You will then be prompted with some information about the name of the project, as well as your python interpreter.</p>
+<p>You will be prompted to provide the name of the project and specify your Python interpreter.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Mercury<span class="w"> </span>v0.72<span class="w"> </span>project<span class="w"> </span>initializer
 Name<span class="w"> </span>of<span class="w"> </span>directory<span class="w"> </span>to<span class="w"> </span>use:<span class="w"> </span>tutorial
-Please<span class="w"> </span>provide<span class="w"> </span>your<span class="w"> </span>python<span class="w"> </span>interpreter<span class="o">(</span>python,<span class="w"> </span>python3,<span class="w"> </span>etc<span class="o">)</span>:<span class="w"> </span>python3
+Please<span class="w"> </span>provide<span class="w"> </span>your<span class="w"> </span>Python<span class="w"> </span>interpreter<span class="w"> </span><span class="o">(</span>python,<span class="w"> </span>python3,<span class="w"> </span>etc.<span class="o">)</span>:<span class="w"> </span>python3
 </pre></div>
 </div>
-<p>Then cd into the directory like so:</p>
+<p>After setting up your project, navigate to the newly created directory:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>tutorial
 </pre></div>
 </div>
-<p>Once we have cd’d into the directory, we can see the project structure.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├── app.py
+<p>Within this directory, you’ll find the following project structure:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>├── app.py
 ├── map.json
 └── src
     ├── cargo
-    │   ├── connection.py
-    │   ├── dev.db
-    │   └── migrations
+    │   ├── connection.py
+    │   ├── dev.db
+    │   └── migrations
     ├── controllers
     ├── security
     ├── static
@@ -246,24 +245,23 @@ Please<span class="w"> </span>provide<span class="w"> </span>your<span class="w"
     └── validators
 </pre></div>
 </div>
-<p>At first this may feel overwhelming, but in practice it is quite simple. Inside the app.py file we have our WSGI
-application. We can then run the app like so:</p>
+<p>While this structure may seem complex at first, it’s organized to streamline your development process. The <code class="docutils literal notranslate"><span class="pre">app.py</span></code> file contains your WSGI application, which you can run using:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>run
 </pre></div>
 </div>
-<p>If this works, you should see the following output:</p>
+<p>If successful, you’ll see the following output:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>WARNING:<span class="w"> </span>This<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>development<span class="w"> </span>server.<span class="w"> </span>Do<span class="w"> </span>not<span class="w"> </span>use<span class="w"> </span>it<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>production<span class="w"> </span>deployment.<span class="w"> </span>Use<span class="w"> </span>a<span class="w"> </span>production<span class="w"> </span>WSGI<span class="w"> </span>server<span class="w"> </span>instead.
 *<span class="w"> </span>Running<span class="w"> </span>on<span class="w"> </span>http://localhost:8000
 Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </span>quit
 </pre></div>
 </div>
-<p>Currently if we go to <a class="reference external" href="http://localhost:8000">localhost:8000</a> we will see a 404 error. This is because currently,
-there are no routes set up. To create a route we can create a controller like so:</p>
+<p>At this stage, visiting <cite>http://localhost:8000</cite> will result in a 404 error because no routes are currently configured. To address this, let’s create a new controller:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>create<span class="w"> </span>controller<span class="w"> </span>index
 </pre></div>
 </div>
-<p>Once this we can see that it creted a file in the src/controllers directory called indexController.py:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">GETRoute</span><span class="p">,</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span>
+<p>This command generates a file named <code class="docutils literal notranslate"><span class="pre">indexController.py</span></code> in the <code class="docutils literal notranslate"><span class="pre">src/controllers</span></code> directory:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">GETRoute</span><span class="p">,</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span>
+
 <span class="k">class</span> <span class="nc">indexController</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
     <span class="nd">@GETRoute</span><span class="p">(</span><span class="s2">&quot;/example&quot;</span><span class="p">)</span>
@@ -273,8 +271,7 @@ there are no routes set up. To create a route we can create a controller like so
         <span class="k">return</span> <span class="n">response</span>
 </pre></div>
 </div>
-<p>We can modify this file so that it returns an html page. But hard coding an entire html file is not best practice so
-we can instead create a template file in src/templates called index.html.</p>
+<p>While this controller returns a simple HTML response, hardcoding HTML is not best practice. Instead, let’s create a template file named <code class="docutils literal notranslate"><span class="pre">index.html</span></code> in the <code class="docutils literal notranslate"><span class="pre">src/templates</span></code> directory:</p>
 <div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Hello World!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
@@ -282,8 +279,9 @@ we can instead create a template file in src/templates called index.html.</p>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </pre></div>
 </div>
-<p>Then we can integerate this template into our controller like so:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">GETRoute</span><span class="p">,</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">use_template</span>
+<p>Next, integrate this template into your controller:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">GETRoute</span><span class="p">,</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">use_template</span>
+
 <span class="k">class</span> <span class="nc">indexController</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
     <span class="nd">@GETRoute</span><span class="p">(</span><span class="s2">&quot;/index&quot;</span><span class="p">)</span>
@@ -291,9 +289,9 @@ we can instead create a template file in src/templates called index.html.</p>
         <span class="k">return</span> <span class="n">use_template</span><span class="p">(</span><span class="s2">&quot;index.html&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Now if we start our server and visit localhost:8000 we should see the html page:</p>
-<p>And voila, you successfully created your first Mercury project!</p>
-<p>Next tutorial: <a class="reference external" href="tutorial2.html">Tutorial 2</a></p>
+<p>Now, restart your server and visit <a class="reference external" href="http://localhost:8000">this page</a> to see your HTML page in action.</p>
+<p>Congratulations! You have successfully created your first Mercury project.</p>
+<p>Next tutorial: <a class="reference external" href="Tutorial3.html">Tutorial 3</a></p>
 </section>
 
         </article>
@@ -345,7 +343,7 @@ we can instead create a template file in src/templates called index.html.</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=5847cda8"></script>
+</div><script src="../_static/documentation_options.js?v=fc3f49b1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>

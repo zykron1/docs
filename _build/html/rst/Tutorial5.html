@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Tutorial 6" href="Tutorial6.html" /><link rel="prev" title="Tutorial 4" href="Tutorial4.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>Tutorial 5 - Mercury 0.80 documentation</title>
+        <title>Tutorial 5 - Mercury 0.81 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -129,7 +129,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Mercury 0.80 documentation</div></a>
+      <a href="../index.html"><div class="brand">Mercury 0.81 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -167,7 +167,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="Tutorials.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="Tutorial1.html">Tutorial 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial1.html">Tutorial 1: Getting Started with Your Mercury Project</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial2.html">Tutorial 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial3.html">Tutorial 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial4.html">Tutorial 4</a></li>
@@ -305,6 +305,9 @@ What is the name of the model&#39;s primary key: id
 [CODEGEN] Successfully created src/controllers/RegisterController.py
 </pre></div>
 </div>
+</section>
+<section id="making-it-pretty">
+<h2>Making it pretty<a class="headerlink" href="#making-it-pretty" title="Link to this heading">#</a></h2>
 <p>Once we do this, we can now set up all our pages. So lets create all our templates.
 To start, lets create a signin template by creating a file in src/templates/login.html:</p>
 <div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
@@ -367,8 +370,8 @@ command:</p>
         <span class="k">return</span> <span class="n">use_template</span><span class="p">(</span><span class="s2">&quot;dashboard.html&quot;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">JWT</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s2">&quot;token&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">payload</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Now all we have to do is connect our pages to our API. To do so we need to edit our controller in
-src/controllers/RegisterController.py and src/controllers/LoginController.py. We can do this like so:</p>
+<p>And just like that, if we visit <a class="reference external" href="localhost:8000/register">our page</a> with the server running, we should be able to
+use our website.</p>
 <p>Next tutorial: <a class="reference external" href="tutorial6.html">Tutorial 6</a></p>
 </section>
 </section>
@@ -430,6 +433,7 @@ src/controllers/RegisterController.py and src/controllers/LoginController.py. We
             <ul>
 <li><a class="reference internal" href="#">Tutorial 5</a><ul>
 <li><a class="reference internal" href="#autogeneration">Autogeneration</a></li>
+<li><a class="reference internal" href="#making-it-pretty">Making it pretty</a></li>
 </ul>
 </li>
 </ul>
@@ -441,7 +445,7 @@ src/controllers/RegisterController.py and src/controllers/LoginController.py. We
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=5847cda8"></script>
+</div><script src="../_static/documentation_options.js?v=fc3f49b1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>

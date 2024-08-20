@@ -102,6 +102,9 @@ With our model created, we can now easily create a register for our model with t
 	[CODEGEN] Successfully created src/validators/RegisterValidator.py
 	[CODEGEN] Successfully created src/controllers/RegisterController.py
 
+Making it pretty
+----------------
+
 Once we do this, we can now set up all our pages. So lets create all our templates.
 To start, lets create a signin template by creating a file in src/templates/login.html:
 
@@ -174,9 +177,8 @@ Then lets program our controller like so:
 		def protected(request: Request) -> Response:
 			return use_template("dashboard.html", username=JWT(request.cookies["token"]).payload["username"])
 
-Now all we have to do is connect our pages to our API. To do so we need to edit our controller in 
-src/controllers/RegisterController.py and src/controllers/LoginController.py. We can do this like so:
 
-
+And just like that, if we visit `our page <localhost:8000/register>`_ with the server running, we should be able to 
+use our website.
 
 Next tutorial: `Tutorial 6 <tutorial6.html>`_
