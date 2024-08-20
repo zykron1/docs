@@ -30,4 +30,7 @@ If you see the message below then Mercury is installed.
 																	\______/ 
 	v0.72
 
+Next Steps
+----------
 
+Check out our `tutorial <tutorial1.html>`_

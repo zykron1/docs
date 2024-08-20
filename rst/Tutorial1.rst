@@ -98,4 +98,4 @@ Now, restart your server and visit `this page <http://localhost:8000>`_ to see y
 
 Congratulations! You have successfully created your first Mercury project.
 
-Next tutorial: `Tutorial 3 <Tutorial3.html>`_ 
+Next tutorial: `Tutorial 2 <Tutorial2.html>`_ 

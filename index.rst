@@ -6,7 +6,7 @@
 Welcome to Mercury's documentation!
 ===================================
 Mercury is a next generation web development framework for Python.
-To start, you might want to consider checking out our `tutorial <rst/Tutorial1.html>`_.
+To start, you might want to consider checking out our `installation guide <Installation.html>`_.
 
 .. toctree::
 	:maxdepth: 3
