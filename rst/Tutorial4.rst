@@ -28,6 +28,9 @@ To start, lets create a signin template by creating a file in src/templates/sign
 
 	<html>
 	<body>
+	{% if error %}
+		<div class="error">{{ error }}</div>
+	{% endif %}
 	<form action="/api/signin" method="post">
 		<input type="text" name="username">
 		<input type="password" name="password">
@@ -42,6 +45,9 @@ Then lets create a signup template by creating a file in src/templates/signup.ht
 
 	<html>
 	<body>
+	{% if error %}
+		<div class="error">{{ error }}</div>
+	{% endif %}
 	<form action="/api/signup" method="post">
 		<input type="text" name="username">
 		<input type="password" name="password">
@@ -112,20 +118,20 @@ pages. To fix this, we can add a check to see if our user is logged in already, 
 		def signin(request: Request) -> Response:
 			if mainJwt._verify(request.cookies.get("token")):
 				return redirect("/protected")
-			return use_template("signin.html")
+			return use_template("signin.html", error=request.args.get("error"))
 	
 		@staticmethod
 		@GETRoute("/signup")
 		def signup(request: Request) -> Response:
 			if mainJwt._verify(request.cookies.get("token")):
 				return redirect("/protected")
-			return use_template("signup.html")
+			return use_template("signup.html", error=request.args.get("error"))
 	
 		@staticmethod
 		@GETRoute("/dashboard")
 		@useAutherization(MainJwt, cookie="token", error=lambda: redirect("/signin"))
 		def protected(request: Request) -> Response:
-			return use_template("protected.html", username=JWT(request.cookies["token"]).payload["username"])
+			return use_template("protected.html", username=JWT(request.cookies["token"]).payload["username"], error=request.args.get("error"))
 
 Now we can implement a login POST by opening the already created src/controllers/AuthenticationFlowController.py:
 

@@ -65,10 +65,10 @@ Then we can program the migration to create the table:
 		wrapper = MigrationWrapper(url)
 		wrapper.create_table("user", [
 			Column("id", Integer, primary_key=True),
-		Column("username", String(20)),
-		Column("password", String(50)),
-		Column("salt", String, nullable=False),
-		Column("email", String(318)),
+			Column("username", String(20)),
+			Column("password", String(50)),
+			Column("salt", String, nullable=False),
+			Column("email", String(318)),
 		])
 	
 	def downgrade(url):
@@ -112,6 +112,9 @@ To start, lets create a signin template by creating a file in src/templates/logi
 
 	<html>
 	<body>
+	{% if error %}
+			<div class="error">{{ error }}</div>
+	{% endif %}
 	<form action="/api/login" method="post">
 		<input type="text" name="username">
 		<input type="password" name="password">
@@ -126,6 +129,9 @@ Then lets create a signup template by creating a file in src/templates/register.
 
 	<html>
 	<body>
+		{% if error %}
+			<div class="error">{{ error }}</div>
+		{% endif %}
 	<form action="/api/register" method="post">
 		<input type="text" name="username">
 		<input type="password" name="password">
@@ -164,19 +170,18 @@ Then lets program our controller like so:
 		@staticmethod
 		@GETRoute("/loign")
 		def signin(request: Request) -> Response:
-			return use_template("login.html")
+			return use_template("login.html", error=request.args.get("error"))
 	
 		@staticmethod
 		@GETRoute("/register")
 		def signup(request: Request) -> Response:
-			return use_template("register.html")
+			return use_template("register.html", error=request.args.get("error"))
 	
 		@staticmethod
 		@GETRoute("/dashboard")
 		@useAutherization(MainJwt, cookie="token", error=lambda: redirect("/signin"))
 		def protected(request: Request) -> Response:
-			return use_template("dashboard.html", username=JWT(request.cookies["token"]).payload["username"])
-
+			return use_template("protected.html", username=JWT(request.cookies["token"]).payload["username"])
 
 And just like that, if we visit `our page <localhost:8000/register>`_ with the server running, we should be able to 
 use our website.

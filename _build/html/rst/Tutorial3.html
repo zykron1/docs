@@ -216,60 +216,54 @@
         <article role="main">
           <section id="tutorial-3">
 <h1>Tutorial 3<a class="headerlink" href="#tutorial-3" title="Link to this heading">#</a></h1>
-<p>This tutorial will be based of the <a class="reference external" href="tutorial2.html">previous tutorial</a>. Please complete it first.</p>
-<p>In the last tutorial we covered how to use the built-in ORM capabilities. In this tutorial we will cover validators.
-In mercury a validator is a preprocesser that can be attached to a controller that automatically filters out bad
-requests. For example, you might want to make sure that you only recive valid requests to your API that. Lets say
-you have a controller that takes in a username and a password. A validator would make sure that the username and
-password are not empty and that the input is a string. This form of preprocessing can be easily achived with the CLI:</p>
+<p>This tutorial builds upon the <a class="reference external" href="tutorial2.html">previous tutorial</a>. Please ensure you have completed it before proceeding.</p>
+<p>In the previous tutorial, we covered the built-in ORM capabilities of Mercury. In this tutorial, we will explore validators. In Mercury, a validator is a preprocessor that can be attached to a controller to automatically filter out invalid requests. For instance, if you have a controller that accepts a username and a password, a validator can ensure that both fields are non-empty and that the input is a string. This preprocessing can be easily achieved using the CLI:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>create<span class="w"> </span>validator<span class="w"> </span>Signin
 </pre></div>
 </div>
-<p>Once you run this, we can open up the file that it created in src/validators/SigninValidator.py:</p>
+<p>After running this command, a new file will be created in <cite>src/validators/SigninValidator.py</cite>. Open the file, and you will see the following:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">Validator</span>
 <span class="k">class</span> <span class="nc">SigninValidator</span><span class="p">:</span>
     <span class="k">pass</span>
 </pre></div>
 </div>
-<p>We can add fields to our validator using this syntax:</p>
+<p>We can define fields for our validator using the following syntax:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">Validator</span>
 <span class="k">class</span> <span class="nc">SigninValidator</span><span class="p">:</span>
     <span class="n">username</span> <span class="o">=</span> <span class="n">Validator</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
     <span class="n">password</span> <span class="o">=</span> <span class="n">Validator</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Using this syntax we have created 2 fields, username and password. We then added minimum and maximum character
-limits to our fields. We can then integrate these fields into our controllers. So lets create a new controller named
-AuthFlowController:</p>
+<p>In this example, we have created two fields, <cite>username</cite> and <cite>password</cite>, and set minimum and maximum character limits for each. These fields can then be integrated into our controllers. Let’s create a new controller called <cite>AuthFlowController</cite>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>create<span class="w"> </span>controller<span class="w"> </span>AuthFlow
 </pre></div>
 </div>
-<p>Then lets write the following code in our controller:</p>
+<p>Next, add the following code to the controller:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">GETRoute</span><span class="p">,</span> <span class="n">POSTRoute</span><span class="p">,</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">useValidator</span>
 <span class="kn">from</span> <span class="nn">src.validators.SigninValidator</span> <span class="kn">import</span> <span class="n">SigninValidator</span>
+
 <span class="k">class</span> <span class="nc">AuthFlowController</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
     <span class="nd">@useValidator</span><span class="p">(</span><span class="n">SigninValidator</span><span class="p">)</span>
     <span class="nd">@POSTRoute</span><span class="p">(</span><span class="s2">&quot;/api/signin&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">signin</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span><span class="o">..</span> <span class="n">code</span><span class="o">-</span><span class="n">block</span><span class="p">::</span> <span class="n">bash</span>
-
-<span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">libmercury</span> <span class="n">create</span> <span class="n">validator</span> <span class="n">Signin</span>
+    <span class="k">def</span> <span class="nf">signin</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="s2">&quot;&lt;h1&gt;You passed the validator&lt;/h1&gt;&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span>
 </pre></div>
 </div>
-<p>Lets then check if our validator is working by sending a POST request to our server:</p>
+<p>Now, let’s verify that our validator is working by sending a POST request to our server:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;username=ahsan&quot;</span><span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;password=password123&quot;</span><span class="w"> </span>http://localhost:8000/api/signin
 </pre></div>
 </div>
-<p>If everything was done correctly, we would see the following response:</p>
+<p>If everything is set up correctly, you should see the following response:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;h1&gt;You<span class="w"> </span>passed<span class="w"> </span>the<span class="w"> </span>validator&lt;/h1&gt;
 </pre></div>
 </div>
-<p>Let’s also create another one just for signing up:</p>
+<p>Let’s create another validator for signing up:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>libmercury<span class="w"> </span>create<span class="w"> </span>validator<span class="w"> </span>Signup
 </pre></div>
 </div>
+<p>Then, define the validator as follows:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libmercury</span> <span class="kn">import</span> <span class="n">Validator</span>
 <span class="k">class</span> <span class="nc">SignupValidator</span><span class="p">:</span>
     <span class="n">username</span> <span class="o">=</span> <span class="n">Validator</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>

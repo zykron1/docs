@@ -271,10 +271,10 @@ in our database, we can do so with the CLI:</p>
     <span class="n">wrapper</span> <span class="o">=</span> <span class="n">MigrationWrapper</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="n">wrapper</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="p">[</span>
         <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-    <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">20</span><span class="p">)),</span>
-    <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">)),</span>
-    <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;salt&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-    <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">318</span><span class="p">)),</span>
+        <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">20</span><span class="p">)),</span>
+        <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">)),</span>
+        <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;salt&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+        <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">318</span><span class="p">)),</span>
     <span class="p">])</span>
 
 <span class="k">def</span> <span class="nf">downgrade</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
@@ -312,6 +312,9 @@ What is the name of the model&#39;s primary key: id
 To start, lets create a signin template by creating a file in src/templates/login.html:</p>
 <div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+{% if error %}
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;error&quot;</span><span class="p">&gt;</span>{{ error }}<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+{% endif %}
 <span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;/api/login&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;username&quot;</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;password&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;password&quot;</span><span class="p">&gt;</span>
@@ -324,6 +327,9 @@ To start, lets create a signin template by creating a file in src/templates/logi
 <p>Then lets create a signup template by creating a file in src/templates/register.html:</p>
 <div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    {% if error %}
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;error&quot;</span><span class="p">&gt;</span>{{ error }}<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    {% endif %}
 <span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;/api/register&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;username&quot;</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;password&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;password&quot;</span><span class="p">&gt;</span>
@@ -356,18 +362,18 @@ command:</p>
     <span class="nd">@staticmethod</span>
     <span class="nd">@GETRoute</span><span class="p">(</span><span class="s2">&quot;/loign&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">signin</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">use_template</span><span class="p">(</span><span class="s2">&quot;login.html&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">use_template</span><span class="p">(</span><span class="s2">&quot;login.html&quot;</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">))</span>
 
     <span class="nd">@staticmethod</span>
     <span class="nd">@GETRoute</span><span class="p">(</span><span class="s2">&quot;/register&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">signup</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">use_template</span><span class="p">(</span><span class="s2">&quot;register.html&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">use_template</span><span class="p">(</span><span class="s2">&quot;register.html&quot;</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">))</span>
 
     <span class="nd">@staticmethod</span>
     <span class="nd">@GETRoute</span><span class="p">(</span><span class="s2">&quot;/dashboard&quot;</span><span class="p">)</span>
     <span class="nd">@useAutherization</span><span class="p">(</span><span class="n">MainJwt</span><span class="p">,</span> <span class="n">cookie</span><span class="o">=</span><span class="s2">&quot;token&quot;</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/signin&quot;</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">protected</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">use_template</span><span class="p">(</span><span class="s2">&quot;dashboard.html&quot;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">JWT</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s2">&quot;token&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">payload</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">use_template</span><span class="p">(</span><span class="s2">&quot;protected.html&quot;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">JWT</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s2">&quot;token&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">payload</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>And just like that, if we visit <a class="reference external" href="localhost:8000/register">our page</a> with the server running, we should be able to
