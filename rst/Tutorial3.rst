@@ -47,9 +47,7 @@ Then lets write the following code in our controller:
 		@staticmethod
 		@useValidator(SigninValidator)
 		@POSTRoute("/api/signin")
-		def signin(request: Request) -> Response:.. code-block:: bash
-
-	python3 -m libmercury create validator Signin
+		def signin(request: Request) -> Response:
 			response = Response("<h1>You passed the validator</h1>")
 			return response
 
