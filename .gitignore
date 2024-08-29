@@ -1,6 +1,4 @@
-_build/*
-_static/*
-images/*
+_build/
 *.html
 *.js
 *.css
