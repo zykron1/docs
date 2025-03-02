@@ -10,7 +10,7 @@ In the previous tutorial, we covered the built-in ORM capabilities of Mercury. I
 
 After running this command, a new file will be created in `src/validators/SigninValidator.py`. Open the file, and you will see the following:
 
-.. code-block:: python3
+.. code-block:: python
 
 	from libmercury import Validator 
 	class SigninValidator:
@@ -18,7 +18,7 @@ After running this command, a new file will be created in `src/validators/Signin
 
 We can define fields for our validator using the following syntax:
 
-.. code-block:: python3
+.. code-block:: python
 
 	from libmercury import Validator 
 	class SigninValidator:
@@ -33,7 +33,7 @@ In this example, we have created two fields, `username` and `password`, and set 
 
 Next, add the following code to the controller:
 
-.. code-block:: python3
+.. code-block:: python
 
 	from libmercury import GETRoute, POSTRoute, Request, Response, useValidator
 	from src.validators.SigninValidator import SigninValidator
